@@ -3,9 +3,10 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const path = require('path');
-const authRoutes=require('./routes/authRoutes');
-const projectRoutes=require('./routes/projectRoutes');
-const taskRoutes=require('./routes/taskRoutes');
+
+const authRoutes = require('./routes/authRoutes');
+const projectRoutes = require('./routes/projectRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 
 dotenv.config();
 
@@ -19,21 +20,17 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 
 app.use(express.static(path.join(__dirname, '../frontend')));
-app.get('/', (req, res) => {
-    res.send('Backend is up and running!');
-});
+
 app.get('/', (req, res) => {
     res.send('Backend is up and running!');
 });
 
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch((error) => {
-        console.error('Error connecting to MongoDB:', error);
-    });
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err));
 
-app.listen(8000, () => {
-    console.log('Server is running on http://localhost:8000');
+const PORT = process.env.PORT || 8000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
 });
